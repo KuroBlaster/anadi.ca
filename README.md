@@ -1,70 +1,150 @@
-# Getting Started with Create React App
+# Anadi Portfolio + Admin CRM
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A personal portfolio built with Next.js App Router, TypeScript, Tailwind CSS, and Motion, now with a built-in admin CRM for Works/blog management.
 
-## Available Scripts
+## Stack
 
-In the project directory, you can run:
+- Next.js (App Router)
+- TypeScript
+- Tailwind CSS v4
+- Motion (`motion/react`)
+- `clsx` + `tailwind-merge`
+- Prisma + PostgreSQL
+- Admin auth with secure HTTP-only session cookies
 
-### `npm start`
+## Setup
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```bash
+corepack pnpm install
+cp .env.example .env
+corepack pnpm run prisma:generate
+corepack pnpm dev
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Open `http://localhost:3000`.
 
-### `npm test`
+Requires Node.js 20.9 or newer. If you want the plain `pnpm` command, run `corepack enable` once after installing Node.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Scripts
 
-### `npm run build`
+```bash
+pnpm dev
+pnpm build
+pnpm start
+pnpm lint
+pnpm typecheck
+pnpm prisma:generate
+pnpm prisma:migrate
+pnpm prisma:seed
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Environment Variables
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Required in `.env`:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+DATABASE_URL=postgresql://...
+SESSION_SECRET=...
+ADMIN_EMAIL=...
+ADMIN_PASSWORD=...
+```
 
-### `npm run eject`
+`ADMIN_EMAIL` + `ADMIN_PASSWORD` are used to bootstrap your first admin account.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Admin CRM
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Login: `/admin/login`
+- Dashboard: `/admin`
+- Create post: `/admin/posts/new`
+- Edit post: `/admin/posts/:id`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+V1 scope:
+- Manage Works/blog entries only (draft/publish/unpublish/delete)
+- Rich markdown editing UI
+- Public Works pages read from DB
+- Existing hardcoded sample entries are seeded into DB for editing
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### First-time DB Setup
 
-## Learn More
+```bash
+pnpm prisma:generate
+pnpm prisma:migrate
+pnpm prisma:seed
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Then run:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+pnpm dev
+```
 
-### Code Splitting
+## Share Publicly (ngrok)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+1. Add your ngrok auth token (one-time):
 
-### Analyzing the Bundle Size
+```bash
+pnpm ngrok:auth <YOUR_NGROK_AUTHTOKEN>
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+2. Run app + public tunnel together:
 
-### Making a Progressive Web App
+```bash
+pnpm share
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+3. Or run tunnel separately (if `pnpm dev` is already running):
 
-### Advanced Configuration
+```bash
+pnpm tunnel
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+When ngrok starts, copy the `https://...ngrok-free.app` URL and share it.
 
-### Deployment
+## Project Structure
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```text
+src/
+  app/
+    admin/
+    about/
+    contact/
+    music/
+    works/
+    layout.tsx
+    page.tsx
+    globals.css
+  components/
+    cards/
+    contact/
+    layout/
+    ui/
+  data/
+    site.ts
+    works.ts
+    mythos.ts
+  lib/
+    cn.ts
+    prisma.ts
+    admin-auth.ts
+    work-posts.ts
+  types/
+    content.ts
+prisma/
+  schema.prisma
+  seed.ts
+  migrations/
+```
 
-### `npm run build` fails to minify
+## Editing Content
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Public site identity/nav and static showcase cards remain in `src/data/*`.
+- CRM-managed Works/blog entries are stored in PostgreSQL and edited via `/admin`.
+- Seeding pulls initial entries from `src/data/mythos.ts`.
+- SoundCloud in `/music` auto-loads latest 3 tracks from `soundcloudProfileUrl`; `soundcloudTracks` remains fallback.
+
+## Design Notes
+
+- Near-black base with off-white text and restrained accents (gold, blue, crimson).
+- Editorial typography with wide spacing and controlled rhythm.
+- Subtle motion (fade-ups, staggered reveals, hover glow) with minimal distraction.
+- Mobile-first responsive layout across all pages.

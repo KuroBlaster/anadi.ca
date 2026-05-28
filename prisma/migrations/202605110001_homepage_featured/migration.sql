@@ -1,0 +1,2 @@
+ALTER TABLE "WorkPost"
+ADD COLUMN "isHomepageFeatured" BOOLEAN NOT NULL DEFAULT false;

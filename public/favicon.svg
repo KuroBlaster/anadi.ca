@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="faviconTitle">
+  <title id="faviconTitle">Anadi favicon</title>
+  <defs>
+    <linearGradient id="faviconBg" x1="10%" y1="8%" x2="88%" y2="92%">
+      <stop offset="0%" stop-color="#17191d" />
+      <stop offset="100%" stop-color="#0f1012" />
+    </linearGradient>
+    <linearGradient id="faviconAccent" x1="18%" y1="10%" x2="82%" y2="90%">
+      <stop offset="0%" stop-color="#d2b279" />
+      <stop offset="100%" stop-color="#956737" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="url(#faviconBg)" />
+  <rect x="4" y="4" width="56" height="56" rx="12" fill="none" stroke="#2a2d33" stroke-width="1.5" />
+  <path
+    d="M32 14 47 50h-8.2l-3.3-8.6H28.4L25.1 50H17L32 14Zm0 11.2-4.8 12.5h9.6L32 25.2Z"
+    fill="url(#faviconAccent)"
+  />
+  <path
+    d="M29.5 34.2h5.1"
+    fill="none"
+    stroke="#dfddd7"
+    stroke-linecap="round"
+    stroke-width="1.4"
+    opacity=".72"
+  />
+</svg>

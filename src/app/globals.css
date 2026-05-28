@@ -1,0 +1,319 @@
+@import "tailwindcss";
+
+:root {
+  --canvas: #0f1012;
+  --canvas-soft: #17191d;
+  --ink: #dfddd7;
+  --ink-soft: #a8a59f;
+  --edge: #2a2d33;
+  --accent-gold: #b19358;
+  --accent-amber: #956737;
+  --accent-blue: #3f66b4;
+  --accent-crimson: #5f2732;
+  --font-display-stack: Georgia, "Times New Roman", serif;
+  --font-body-stack: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-mono-stack: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  --pulse-beat: 0.6667s;
+  --pulse-2: 1.3334s;
+  --pulse-4: 2.6668s;
+  --pulse-8: 5.3336s;
+  --pulse-16: 10.6672s;
+  --pulse-24: 16.0008s;
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-canvas-soft: var(--canvas-soft);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-edge: var(--edge);
+  --color-accent-gold: var(--accent-gold);
+  --color-accent-amber: var(--accent-amber);
+  --color-accent-blue: var(--accent-blue);
+  --color-accent-crimson: var(--accent-crimson);
+  --font-sans: var(--font-body-stack);
+  --font-display: var(--font-display-stack);
+  --font-mono: var(--font-mono-stack);
+}
+
+body {
+  background:
+    radial-gradient(circle at 8% 12%, rgba(63, 102, 180, 0.1), transparent 30%),
+    radial-gradient(circle at 86% 4%, rgba(177, 147, 88, 0.1), transparent 28%),
+  linear-gradient(to bottom, #0f1012 0%, #101215 44%, #0d0f12 100%);
+  color: var(--ink);
+  font-family: var(--font-body-stack), sans-serif;
+  letter-spacing: 0.01em;
+}
+
+html,
+body {
+  background-color: var(--canvas);
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--edge) 86%, #fff 4%) var(--canvas);
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background:
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--canvas) 92%, #000 8%),
+      color-mix(in srgb, var(--canvas-soft) 90%, #000 10%)
+    );
+}
+
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--edge) 74%, var(--accent-blue) 26%),
+    color-mix(in srgb, var(--edge) 82%, var(--accent-gold) 18%)
+  );
+  border-radius: 999px;
+  border: 2px solid var(--canvas);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent-blue) 42%, transparent);
+  color: var(--ink);
+}
+
+a,
+button,
+input,
+textarea {
+  transition-duration: 260ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.signal-grid {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+.prose-signal p {
+  color: var(--ink-soft);
+  line-height: 1.9;
+  margin-bottom: 1.15rem;
+}
+
+.prose-signal h3 {
+  font-family: var(--font-display-stack), serif;
+  color: var(--ink);
+  margin-bottom: 0.8rem;
+  letter-spacing: 0.02em;
+}
+
+.prose-signal img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1.5rem 0;
+  border-radius: 1rem;
+  border: 1px solid color-mix(in srgb, var(--edge) 72%, #fff 6%);
+  background: var(--canvas-soft);
+}
+
+.surface-card {
+  border: 1px solid color-mix(in srgb, var(--edge) 78%, #fff 6%);
+  background: linear-gradient(
+    140deg,
+    color-mix(in srgb, var(--canvas-soft) 96%, #fff 2%) 0%,
+    color-mix(in srgb, var(--canvas) 92%, #000 8%) 100%
+  );
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.015) inset,
+    0 24px 42px rgba(0, 0, 0, 0.44);
+}
+
+.signal-line {
+  background: linear-gradient(to right, transparent, rgba(223, 221, 215, 0.33), transparent);
+  height: 1px;
+}
+
+.hero-wave-beat {
+  background-image: url("/signal-beat.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  animation: beatPulse var(--pulse-4) steps(1, end) infinite, beatDrift var(--pulse-16) ease-in-out infinite;
+}
+
+.hero-wave-chaos {
+  background-image: url("/signal-chaos.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  animation: chaosSweep var(--pulse-16) ease-in-out infinite alternate;
+  animation-delay: calc(var(--pulse-4) * -1);
+}
+
+.hero-chaos-field {
+  pointer-events: none;
+  opacity: 0.2;
+  mix-blend-mode: screen;
+}
+
+.hero-chaos-field--a {
+  background:
+    radial-gradient(circle at 14% 28%, rgba(63, 102, 180, 0.42) 0 1px, transparent 2px),
+    radial-gradient(circle at 82% 24%, rgba(177, 147, 88, 0.46) 0 1.2px, transparent 2px),
+    radial-gradient(circle at 60% 70%, rgba(95, 39, 50, 0.34) 0 1.1px, transparent 2px);
+  background-size: 140px 140px, 180px 180px, 160px 160px;
+  animation: chaosParticlesA var(--pulse-16) ease-in-out infinite alternate;
+  animation-delay: calc(var(--pulse-8) * -1);
+}
+
+.hero-chaos-field--b {
+  background:
+    radial-gradient(circle at 24% 74%, rgba(63, 102, 180, 0.26) 0 1px, transparent 2px),
+    radial-gradient(circle at 74% 58%, rgba(177, 147, 88, 0.24) 0 1px, transparent 2px),
+    radial-gradient(circle at 48% 24%, rgba(95, 39, 50, 0.2) 0 1px, transparent 2px);
+  background-size: 210px 210px, 170px 170px, 240px 240px;
+  animation: chaosParticlesB var(--pulse-16) ease-in-out infinite alternate;
+  animation-delay: calc(var(--pulse-4) * -1);
+}
+
+.hero-chaos-streaks {
+  pointer-events: none;
+  opacity: 0.16;
+  mix-blend-mode: screen;
+  background-image:
+    linear-gradient(112deg, transparent 0%, rgba(63, 102, 180, 0.7) 47%, transparent 53%),
+    linear-gradient(72deg, transparent 0%, rgba(177, 147, 88, 0.56) 47%, transparent 53%),
+    linear-gradient(136deg, transparent 0%, rgba(95, 39, 50, 0.6) 47%, transparent 53%);
+  background-size: 340px 180px, 280px 170px, 310px 160px;
+  animation: chaosStreakDrift var(--pulse-16) ease-in-out infinite alternate;
+  animation-delay: calc(var(--pulse-8) * -1);
+}
+
+.groove-band {
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(177, 147, 88, 0.18) 28%,
+    rgba(63, 102, 180, 0.28) 50%,
+    rgba(95, 39, 50, 0.18) 72%,
+    transparent 100%
+  );
+  filter: blur(0.2px);
+  animation: grooveShift var(--pulse-16) ease-in-out infinite;
+}
+
+@media (max-width: 767px), (prefers-reduced-motion: reduce) {
+  .groove-band {
+    animation: none;
+    opacity: 0.56;
+  }
+}
+
+@keyframes grooveShift {
+  0% {
+    transform: translateX(-0.9%);
+    opacity: 0.38;
+  }
+  50% {
+    transform: translateX(0.9%);
+    opacity: 0.62;
+  }
+  100% {
+    transform: translateX(-0.9%);
+    opacity: 0.38;
+  }
+}
+
+@keyframes beatPulse {
+  0%,
+  100% {
+    opacity: 0.18;
+  }
+  10%,
+  14% {
+    opacity: 0.34;
+  }
+  54%,
+  58% {
+    opacity: 0.26;
+  }
+  78%,
+  82% {
+    opacity: 0.3;
+  }
+}
+
+@keyframes beatDrift {
+  0% {
+    transform: translateX(-0.8%) scale(1.01);
+  }
+  50% {
+    transform: translateX(0.8%) scale(1.02);
+  }
+  100% {
+    transform: translateX(-0.8%) scale(1.01);
+  }
+}
+
+@keyframes chaosSweep {
+  0% {
+    transform: translate3d(-0.9%, 0.26%, 0) scale(1.018);
+    opacity: 0.14;
+  }
+  100% {
+    transform: translate3d(0.85%, -0.24%, 0) scale(1.028);
+    opacity: 0.22;
+  }
+}
+
+@keyframes chaosParticlesA {
+  0% {
+    transform: translate3d(-0.42%, 0.38%, 0) scale(1.01);
+    opacity: 0.16;
+  }
+  100% {
+    transform: translate3d(0.54%, -0.42%, 0) scale(1.02);
+    opacity: 0.24;
+  }
+}
+
+@keyframes chaosParticlesB {
+  0% {
+    transform: translate3d(0.44%, -0.3%, 0) scale(1.016);
+    opacity: 0.12;
+  }
+  100% {
+    transform: translate3d(-0.48%, 0.38%, 0) scale(1.004);
+    opacity: 0.2;
+  }
+}
+
+@keyframes chaosStreakDrift {
+  0% {
+    background-position: -130px -32px, 56px 18px, -78px 10px;
+    opacity: 0.12;
+  }
+  100% {
+    background-position: 220px 48px, -108px -24px, 188px -18px;
+    opacity: 0.18;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

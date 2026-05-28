@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AdminRole {
+  admin
+}
+
+enum PostStatus {
+  draft
+  published
+}
+
+enum WorkPostDateSource {
+  publishedAt
+  createdAt
+  updatedAt
+}
+
+model AdminUser {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  role         AdminRole @default(admin)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model WorkPost {
+  id              String     @id @default(cuid())
+  slug            String     @unique
+  title           String
+  excerpt         String
+  imageUrl        String?
+  imageAlt        String?
+  youtubeUrl      String?
+  contentMarkdown String
+  contentHtml     String
+  tags            String[]
+  readTime        String
+  archetype       String?
+  isHomepageFeatured Boolean @default(false)
+  isSelectedWorkFeatured Boolean @default(false)
+  isCursed        Boolean    @default(false)
+  status          PostStatus @default(draft)
+  displayDateSource WorkPostDateSource @default(publishedAt)
+  publishedAt     DateTime?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+}
+
+model MusicEntry {
+  id               String     @id @default(cuid())
+  slug             String     @unique
+  title            String
+  description      String
+  imageUrl         String?
+  imageAlt         String?
+  soundcloudUrl    String
+  soundcloudEmbedUrl String
+  youtubeUrl       String?
+  lyricsMarkdown   String
+  lyricsHtml       String
+  analysisMarkdown String
+  analysisHtml     String
+  relatedNotes     String[]
+  isCursed         Boolean    @default(false)
+  status           PostStatus @default(draft)
+  publishedAt      DateTime?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+}
